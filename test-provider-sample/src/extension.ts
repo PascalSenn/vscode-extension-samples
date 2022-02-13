@@ -108,7 +108,7 @@ export async function activate(context: vscode.ExtensionContext) {
     if (e.uri.scheme !== 'file') {
       return;
     }
-    
+
     if (!e.uri.path.endsWith('.md')) {
       return;
     }
@@ -123,16 +123,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.workspace.onDidOpenTextDocument(updateNodeForDocument),
-    vscode.workspace.onDidChangeTextDocument(e => updateNodeForDocument(e.document)),
+    vscode.workspace.onDidChangeTextDocument(e => updateNodeForDocument(e.document))
   );
 }
 
 function getOrCreateFile(controller: vscode.TestController, uri: vscode.Uri) {
-  const existing = controller.items.get(uri.toString());
-  if (existing) {
-    return { file: existing, data: testData.get(existing) as TestFile };
-  }
-
   const file = controller.createTestItem(uri.toString(), uri.path.split('/').pop()!, uri);
   controller.items.add(file);
 
